@@ -17,17 +17,18 @@ class AVLTree {
     }
 
     // Print using pre-order traversal
-    public void printPreorder(AVLTreeNode node) {
+    public void printPreorder(AVLTreeNode node, int height) {
         if (node == null) {
             return;
         }
-        System.out.print(node.value);
-        printPreorder(node.left); 
-        printPreorder(node.right); 
+        String indent = new String(new char [height]).replace("\0", "  ");
+        System.out.println(indent + node.value);
+        printPreorder(node.left, height + 1); 
+        printPreorder(node.right, height + 1); 
     }
 
     public void print() {
-        printPreorder(root);
+        printPreorder(root, 0);
     }
 
     // Search using pre-order traversal
@@ -45,8 +46,31 @@ class AVLTree {
     }
 
     public void insert(String e) {
-        if (root.value == null) {
+        if (root.value == null) { // If tree is empty
             root = new AVLTreeNode(e);
+        } else {
+            AVLTreeNode node = root; // Start at root
+            
+            boolean done = false;
+            while (!done) {
+                if (e.compareTo(node.value) == 0) {
+                    done = true;
+                } else if (e.compareTo(node.value) < 0) {
+                    if (node.left == null) {
+                        node.left = new AVLTreeNode(e);
+                        done = true;
+                    } else {
+                        node = node.left;
+                    }
+                } else if (e.compareTo(node.value) > 0) {
+                    if (node.right == null) {
+                        node.right = new AVLTreeNode(e);
+                        done = true;
+                    } else {
+                        node = node.right;
+                    }
+                }
+            }
         }
     }
 
